@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <title>DAT DRESS THO</title>
+  <style id="jsbin-css">
+  #dressBox {
+    background: white;
+    width: 695px;
+    padding: 100px;
+  }
+  
+  #colorChoice {
+    
+  }
+  </style>
+</head>
+<body>
+  
+
+  <div id="colorChoice" class="btn-group" role="group">
+    <button type="button" class="btn btn-default">White</button>
+    <button type="button" class="btn btn-default">Black</button>
+    <button type="button" class="btn btn-default">Gray</button>
+    <button type="button" class="btn btn-default">Red</button>
+    <button type="button" class="btn btn-default">Green</button>
+    <button type="button" class="btn btn-default">Blue</button>
+    <button type="button" class="btn btn-default">Orange</button>
+    <button type="button" class="btn btn-default">Purple</button>
+    <button type="button" class="btn btn-default">Yellow</button>
+  </div>
+
+  <div id="dressBox">
+    <img src="http://40.media.tumblr.com/a391a1b4b46dd6b498d379e50f96ecbc/tumblr_nkcjuq8Tdr1tnacy1o1_500.jpg">
+  </div>
+
+  <script id="jsbin-javascript">
+  $(
+    function($) {
+      $("#colorChoice button").on(
+        "click",
+        function(event) {
+        $("#dressBox").css("background-color", this.innerHTML.toLowerCase());
+        }
+      );
+    }
+  );
+  </script>
+
+</body>
+</html>
