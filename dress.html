@@ -8,7 +8,6 @@
   <title>DAT DRESS THO</title>
   <style id="jsbin-css">
   #dressBox {
-    background: white;
     width: 695px;
     padding: 100px;
   }
@@ -43,7 +42,7 @@
       $("#colorChoice button").on(
         "click",
         function(event) {
-        $("#dressBox").css("background-color", this.innerHTML.toLowerCase());
+        $("body").css("background-color", this.innerHTML.toLowerCase());
         }
       );
     }
