@@ -1,0 +1,107 @@
+<script language="JavaScript">
+function verifyField(theField,maxValue,fieldName) {
+	if ( parseInt(theField.value) > maxValue ) {
+		theField.focus();
+		alert( "You may not enter more than " + maxValue + " for " + fieldName );
+	}
+}
+
+function calculatePTGS(theForm) {
+	var forte = parseInt(theForm.forteExponent.value);
+	var mwRaw = parseInt(theForm.mwExponent.value);
+	if ( isNaN(forte) || isNaN(mwRaw) ) {
+		alert("Check your numbers, pegboy!");
+	} else {
+
+		if ( theForm.mwShade[0].checked ) {
+			// black
+			calcPTGS(mwRaw,forte);
+		} else if ( theForm.mwShade[1].checked ) {
+			// grey
+			calcPTGS(mwRaw+16,forte);
+		} else if ( theForm.mwShade[2].checked ) {
+			// white
+			calcPTGS(mwRaw+32,forte);
+		}
+
+	}
+	
+}
+
+function calcPTGS(mortal,forte) {
+	var superficial,light,midi,severe,traumatic;
+	if ( mortal > 32 ) {
+		// white
+		superficial = 2*forte;
+		light = 2*superficial;
+		traumatic = mortal - 1;
+		severe = traumatic - 1;
+		midi = severe - 2;
+	} else if ( mortal > 16 ) {
+		// grey
+		superficial= forte;
+		light = 2*superficial;
+		traumatic = mortal -1;
+		severe = traumatic - 1;
+		midi = severe - 2;
+	} else {
+		// black
+		var ptgsSpacer = Math.ceil(forte/2);
+		superficial = Math.floor(forte/2) + 1;
+		light = calcPTGSWound( superficial, ptgsSpacer, mortal, 3 );
+		midi = calcPTGSWound( light, ptgsSpacer, mortal, 2 );
+		severe = calcPTGSWound( midi, ptgsSpacer, mortal, 1 );
+		traumatic = calcPTGSWound( severe, ptgsSpacer, mortal, 0 );		
+	} 
+
+	printPTGS(superficial,light,midi,severe,traumatic,mortal);
+}
+
+function printPTGS(superficial,light,midi,severe,traumatic,mortal) {
+	var ptgs = 	" Su: " + formatPTGS(superficial) + 
+			" Li: " + formatPTGS(light) + 
+			" Mi: " + formatPTGS(midi) + 
+			" Se: " + formatPTGS(severe) + 
+			" Tr: " + formatPTGS(traumatic) + 
+			" MW: " + formatPTGS(mortal);
+	document.getElementById('ptgs').innerHTML = ptgs;
+}
+
+function formatPTGS(ptgsRaw) {
+	if ( ptgsRaw > 32 ) {
+		return "W"+(ptgsRaw-32);
+	} else if ( ptgsRaw > 16 ) {
+		return "G"+(ptgsRaw-16);
+	} else {
+		return "B"+(ptgsRaw);
+	}
+}
+
+function calcPTGSWound( startW, spacing, maxWounds, remainingWounds ) {
+	while ( spacing > 0 ) {
+		if ( (startW + spacing + remainingWounds) < maxWounds ) {
+			break;
+		} else {
+			spacing--;
+		}
+	}
+	return startW + spacing;
+}
+</script>
+<h3>PTGS Calculator</h3>
+<form onsubmit="return false;">
+
+<b>Mortal Wound:</b>
+<input type="radio" name="mwShade" checked/> B
+<input type="radio" name="mwShade" > G
+<input type="radio" name="mwShade" > W
+<input type="text" name="mwExponent" size="2" maxlength="2" onchange="verifyField(this,16,'Mortal Wound')"/>
+<br/>
+<b>Forte Exponent:</b>
+<input type="text" name="forteExponent" size="2" maxlength="2" onchange="verifyField(this,10,'Forte')"/>
+
+<br/><br/>
+<input type="button" value="calculate" onclick="calculatePTGS(this.form)"/>
+<br/><br/>
+<b>results:</b> <span id="ptgs"></span> 
+</form>
